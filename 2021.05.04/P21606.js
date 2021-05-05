@@ -1,10 +1,5 @@
 const fs = require('fs');
-const input = /*fs.readFileSync('/dev/stdin')*/`5
-10111
-1 2
-2 3
-2 4
-4 5`.toString().split('\n');
+const input = fs.readFileSync('/dev/stdin').toString().split('\n');
 
 const nodeTypes = input[1].split('').map(Number);
 const nodes = [];
