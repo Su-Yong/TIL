@@ -1,49 +1,52 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
+
+type Entry struct {
+	value, index int
+}
+
+type EntryArray []Entry
+
+func (entry EntryArray) Len() int {
+	return len(entry)
+}
+func (entry EntryArray) Swap(i, j int) {
+	entry[i].index, entry[j].index = entry[j].index, entry[i].index
+	entry[i].value, entry[j].value = entry[j].value, entry[i].value
+}
+func (entry EntryArray) Less(i, j int) bool {
+	return entry[i].value < entry[j].value
+}
 
 func main() {
 	var length, input int
-	var origin []int
-	table := make(map[int]int)
+	var result [1000000]int
+	var origin []Entry
 
 	fmt.Scan(&length)
-
 	for i := 0; i < length; i++ {
 		fmt.Scan(&input)
-		origin = append(origin, input)
 
-		_, check := table[input]
-
-		if !check {
-			table[input] = 0
-		}
-
-		if !include(input, origin, i) {
-			value := 0
-			for key := range table {
-				if key > input {
-					table[key] += 1
-				} else if key < input {
-					value += 1
-				}
-			}
-
-			table[input] = value
-		}
+		origin = append(origin, Entry{input, i})
 	}
 
+	sort.Sort(EntryArray(origin))
+
+	now := origin[0].value
+	value := 0
 	for _, v := range origin {
-		fmt.Print(table[v], " ")
-	}
-}
-
-func include(value int, array []int, except int) bool {
-	for index, compare := range array {
-		if compare == value && except != index {
-			return true
+		if v.value > now {
+			value += 1
+			now = v.value
 		}
+		result[v.index] = value
 	}
 
-	return false
+	for i := 0; i < length; i++ {
+		fmt.Print(result[i], " ")
+	}
 }
