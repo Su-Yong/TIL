@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func main() {
@@ -19,18 +20,24 @@ func main() {
 		fmt.Fscan(reader, &array[i])
 	}
 
-	result := ""
-outer:
+	var result strings.Builder
+	check := false
 	for i, v := range array {
-		for j := i - 1; j > 0; j-- {
+		check = false
+		for j := i - 1; j >= 0; j-- {
 			if v <= array[j] {
-				result += strconv.Itoa(j+1) + " "
-				continue outer
+				result.WriteString(strconv.Itoa(j + 1))
+				result.WriteString(" ")
+				check = true
+				break
 			}
 		}
-		result += "0 "
+
+		if !check {
+			result.WriteString("0 ")
+		}
 	}
 
-	writer.WriteString(result)
+	writer.WriteString(result.String())
 	writer.Flush()
 }

@@ -6,6 +6,7 @@ import (
 	"os"
 	"sort"
 	"strconv"
+	"strings"
 )
 
 func main() {
@@ -35,10 +36,11 @@ func main() {
 		}
 	}
 
-	result := ""
+	var result strings.Builder
 	for _, v := range array {
-		result += strconv.Itoa(table[v]) + " "
+		result.WriteString(strconv.Itoa(table[v]))
+		result.WriteString(" ")
 	}
-	writer.WriteString(result)
+	writer.WriteString(result.String())
 	writer.Flush()
 }
